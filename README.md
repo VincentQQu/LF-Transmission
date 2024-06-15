@@ -2,11 +2,11 @@
 
 This is the repository for paper "Efficient Light Field Transmission via Enhanced Resampling Reconstruction and User Angular Attention Estimation", under review.
 
+### Requirements
 
+matplotlib==3.3.0, numpy==1.23.5, pandas==1.0.5, Pillow==9.5.0, scipy==1.10.1, seaborn==0.10.1, tensorflow==2.10.1,opencv-python==4.9.0.80
 
-## Angular Attention
-
-### How to Predict User Angular Attention? 
+## How to Predict User Angular Attention? 
 
 1.Place the light field image (LFI) into the `APP/MINI_BATCH_DATA_TEST` folder under the dataset folder: `./Dataset/APP/MINI_BATCH_DATA_TEST`. For convenience, a sample LFI has already been placed in this folder.
 
@@ -31,9 +31,8 @@ The predicted result is a probability distribution, representing the likelihood 
 
 ## Transmission Pipline
 
-### How to transmit LFI?
 
-#### the Proposed Method & Enhanced Resampling Reconstruction
+### The Proposed Method (Angular Attention + Enhanced Resampling Reconstruction)
 
 1.Specify the root directory of the light field images to be transmitted in `./Transmission/proposed&ERR.py`: `F:/LFProject/Test/Angattn/Transmission/scenes/proposed&ERR` (recommended to use absolute path). For convenience, a sample LFI has already been placed in this folder.
 
@@ -50,7 +49,7 @@ The predicted result is a probability distribution, representing the likelihood 
 
 
 
-#### Angular Attention-only strategy 
+### Angular Attention-only strategy 
 
 1.Specify the root directory of the LFI to be transmitted in `./Transmission/Angular_Attention_only.py`: `F:\LFProject\Test\Angattn\Transmission\scenes\Angular_Attention_only` (recommended to use an absolute path).
 
@@ -60,7 +59,7 @@ The predicted result is a probability distribution, representing the likelihood 
 
 
 
-#### HEVC
+### HEVC
 
 1.Specify the root directory of the LFI to be transmitted in `./Transmission/HEVC.py`: `F:/LFProject/Test/Angattn/Transmission/scenes/HEVC` (recommended to use an absolute path).
 
@@ -70,7 +69,7 @@ The predicted result is a probability distribution, representing the likelihood 
 
 
 
-#### JPEG2000
+### JPEG2000
 
 1.Specify the root directory of the LFI to be transmitted in `./Transmission/jpeg2000.py`: `F:/LFProject/Test/Angattn/Transmission/scenes/JPEG2000` (recommended to use an absolute path).
 
@@ -79,6 +78,4 @@ The predicted result is a probability distribution, representing the likelihood 
 3.The LFI transmitted using the JPEG2000 will be saved in the `./Transmission/scenes/JPEG2000/ComplexBackground/0062/decompressed` directory.
 
 
-### Requirements
 
-matplotlib==3.3.0, numpy==1.23.5, pandas==1.0.5, Pillow==9.5.0, scipy==1.10.1, seaborn==0.10.1, tensorflow==2.10.1,opencv-python==4.9.0.80
