@@ -8,7 +8,7 @@ matplotlib==3.3.0, numpy==1.23.5, pandas==1.0.5, Pillow==9.5.0, scipy==1.10.1, s
 
 ## How to Predict User Angular Attention? 
 
-1.Place the light field image (LFI) (in form of subview) into the folder: `./Dataset/APP/MINI_BATCH_DATA_TEST`. For convenience, a sample LFI has already been placed in this folder.
+1.Place the light field image (LFI) (in form of subviews) into the folder: `./Dataset/APP/MINI_BATCH_DATA_TEST`. For convenience, a sample LFI has already been placed in this folder.
 
 2.Run `python3 app.py`. Note: If you are predicting LFI from a new dataset, ensure that your LFI have a resolution of `9 × 9 × 600 × 400 × 3` (either cropping or up/downsampling).
 
