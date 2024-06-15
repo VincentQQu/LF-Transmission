@@ -34,7 +34,7 @@ The predicted result is a probability distribution, representing the likelihood 
 
 ### The Proposed Method (Angular Attention + Enhanced Resampling Reconstruction)
 
-1.Specify the root directory of the light field images to be transmitted in `./Transmission/proposed&ERR.py`: `F:/LFProject/Test/Angattn/Transmission/scenes/proposed&ERR` (recommended to use absolute path). For convenience, a sample LFI has already been placed in this folder.
+1.Specify the root directory of the light field images to be transmitted in `./Transmission/proposed.py`: `./Transmission/scenes/proposed` (recommended to use absolute path). For convenience, a sample LFI has already been placed in this folder.
 
 2.Run `python3 proposed&ERR.py`.
 
