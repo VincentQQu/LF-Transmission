@@ -9,7 +9,7 @@ This is the repository for paper "Efficient Light Field Transmission via Enhance
 
 ### Requirements
 
-matplotlib==3.3.0, numpy==1.23.5, pandas==1.0.5, Pillow==9.5.0, scipy==1.10.1, seaborn==0.10.1, tensorflow==2.10.1, opencv-python==4.9.0.80
+matplotlib==3.3.0, numpy==1.23.5, pandas==1.0.5, Pillow==9.5.0, scipy==1.10.1, seaborn==0.10.1, tensorflow==2.10.1, opencv-python==4.9.0
 
 
 
