@@ -40,7 +40,7 @@ Since the proposed method uses HEVC codec, [ffmpeg](https://ffmpeg.org/download.
 
 3. The transmitted Light Field Images (LFI) will be saved in `./Transmission/scenes/proposed/ComplexBackground/0062/0062_Divide_6`. Within this directory:
 
-- `0062_Divide_6/Adaptive_SR/Reconstruction` contains the LFIs transmitted with the proposed strategy.
+-- `0062_Divide_6/Adaptive_SR/Reconstruction` contains the LFIs transmitted with the proposed strategy.
 - `0062_Divide_6/Adaptive_SR/SR` contains the LFIs transmitted with the proposed strategy without residual map.
 - `0062_Divide_6/SR/Reconstruction` contains the LFIs transmitted with the Enhanced Resampling Reconstructions-only method.
 - `0062_Divide_6/SR/SR` contains the LFIs transmitted with the Enhanced Resampling Reconstructions-only method without residual information.
