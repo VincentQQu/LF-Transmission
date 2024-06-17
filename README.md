@@ -42,7 +42,7 @@ Since the proposed method uses HEVC codec, [ffmpeg](https://ffmpeg.org/download.
 
 ## LF Eye-Tracking Dataset
 
-You can download the dataset [LF-EMT12](https://drive.google.com/drive/folders/1vZdrADy0TWMs_Nw2Cb_6dSzg9cx5O8qn?usp=sharing) via the link.
+You can download the dataset LF-EMT12 via the [link](https://drive.google.com/drive/folders/1vZdrADy0TWMs_Nw2Cb_6dSzg9cx5O8qn?usp=sharing).
 
 
 
