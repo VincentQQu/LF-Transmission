@@ -44,8 +44,8 @@ Since the proposed method uses HEVC codec, [ffmpeg](https://ffmpeg.org/download.
 
 - `0062_Divide_6/Adaptive_SR/Reconstruction` holds the LFIs transmitted with the proposed strategy.
 - `0062_Divide_6/Adaptive_SR/SR` holds the LFIs transmitted with the proposed strategy without residual map.
-- `0062_Divide_6/SR/Reconstruction` holds the LFIs transmitted with the Enhanced Resampling Reconstructions method.
-- `0062_Divide_6/SR/SR` holds the LFIs transmitted with the Enhanced Resampling Reconstructions method without residual information.
+- `0062_Divide_6/SR/Reconstruction` holds the LFIs transmitted with the Enhanced Resampling Reconstructions-only method.
+- `0062_Divide_6/SR/SR` holds the LFIs transmitted with the Enhanced Resampling Reconstructions-only method without residual information.
 
 
 
