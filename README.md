@@ -2,9 +2,16 @@
 
 This is the repository for paper "Efficient Light Field Transmission via Enhanced Resampling Reconstruction and User Angular Attention Estimation", under review.
 
+### Important
+
+1. Due to GitHub's size limitations, the complete project, including model weights, has been uploaded to Google Drive.
+2. Download and unzip the entire folder (~1 GB, mean and std to normalise LFIs contribute a lot) from [Google Drive](https://drive.google.com/file/d/1PzS-n9n0O2AQbkT8WRAPFiuKe6y1UepL/view?usp=sharing).
+
 ### Requirements
 
 matplotlib==3.3.0, numpy==1.23.5, pandas==1.0.5, Pillow==9.5.0, scipy==1.10.1, seaborn==0.10.1, tensorflow==2.10.1, opencv-python==4.9.0.80
+
+
 
 
 ## How to Predict User Angular Attention? 
