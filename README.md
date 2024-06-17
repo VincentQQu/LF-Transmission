@@ -18,15 +18,6 @@ matplotlib==3.3.0, numpy==1.23.5, pandas==1.0.5, Pillow==9.5.0, scipy==1.10.1, s
 The predicted result is a probability distribution, representing the likelihood of each subview being viewed. The larger the value, the higher the probability of being viewed.
 
 
-### File Descriptions
-
-- **generate_data.py**: converts the augmented LFI into `.npz` files.
-
-- **xpreprocess.py**: essentials to convert massive raw LFI dataset into tidy trainable train-test-splitted data (including data augmentation methods)
-- **xmodels.py**: definiation of model and its layers
-- **constants.py**: storing global variables
-- **xtrains.py**: training models with checkpoints
-- **utils.py**: utilities for training such as batch generator and evaluators
 
 
 
