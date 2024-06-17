@@ -5,7 +5,7 @@ This is the repository for paper "Efficient Light Field Transmission via Enhance
 ### Important
 
 1. Due to GitHub's size limitations, the complete project, including model weights, has been uploaded to Google Drive.
-2. Download and unzip the entire folder (~1 GB, mean and std to normalise LFIs contribute a lot) from [Google Drive]().
+2. Download and unzip the entire folder (~1 GB, mean and std to normalise LFIs contribute a lot) from [Google Drive](https://drive.google.com/drive/folders/1vZdrADy0TWMs_Nw2Cb_6dSzg9cx5O8qn?usp=sharing).
 
 ### Requirements
 
@@ -13,8 +13,7 @@ matplotlib==3.3.0, numpy==1.23.5, pandas==1.0.5, Pillow==9.5.0, scipy==1.10.1, s
 
 
 
-
-## How to Predict User Angular Attention? 
+## Predicting User Angular Attention
 
 1. Place the light field image (LFI) (in form of subviews) into the folder: `./Dataset/APP/MINI_BATCH_DATA_TEST`. For convenience, a sample LFI has already been placed in this folder.
 
@@ -27,12 +26,9 @@ The predicted result is a probability distribution, representing the likelihood 
 
 
 
-
-## Transmission Pipline
+## The Proposed Transmission Method (Angular Attention + Enhanced Resampling Reconstruction)
 
 Since the proposed method uses HEVC codec, [ffmpeg](https://ffmpeg.org/download.html) is required for transmission.
-
-### The Proposed Method (Angular Attention + Enhanced Resampling Reconstruction)
 
 1. Specify the root directory of the light field images to be transmitted in `./Transmission/proposed.py`: `./Transmission/scenes/proposed`. For convenience, a sample LFI has already been placed in this folder.
 
@@ -45,6 +41,11 @@ Since the proposed method uses HEVC codec, [ffmpeg](https://ffmpeg.org/download.
   * `0062_Divide_6/SR/SR` contains the LFIs transmitted with the Enhanced Resampling Reconstructions-only method without residual information.
 
 
+
+
+
+
+## Other Transmission Methods
 
 ### Angular Attention-only strategy 
 
