@@ -25,7 +25,6 @@ The predicted result is a probability distribution, representing the likelihood 
 
 
 
-
 ## The Proposed Transmission Method (Angular Attention + Enhanced Resampling Reconstruction)
 
 Since the proposed method uses HEVC codec, [ffmpeg](https://ffmpeg.org/download.html) is required for transmission.
@@ -41,6 +40,9 @@ Since the proposed method uses HEVC codec, [ffmpeg](https://ffmpeg.org/download.
   * `0062_Divide_6/SR/SR` contains the LFIs transmitted with the Enhanced Resampling Reconstructions-only method without residual information.
 
 
+## LF Eye-Tracking Dataset
+
+You can download the dataset [LF-EMT12](https://drive.google.com/drive/folders/1vZdrADy0TWMs_Nw2Cb_6dSzg9cx5O8qn?usp=sharing) via the link.
 
 
 
