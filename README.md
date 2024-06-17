@@ -38,7 +38,7 @@ Since the proposed method uses HEVC codec, [ffmpeg](https://ffmpeg.org/download.
 
 1.Specify the root directory of the light field images to be transmitted in `./Transmission/proposed.py`: `./Transmission/scenes/proposed`. For convenience, a sample LFI has already been placed in this folder.
 
-2.Run `python3 proposed.py`.
+2.Run `python3 ./Transmission/proposed.py`.
 
 3.The transmitted Light Field Images (LFI) will be saved in `./Transmission/scenes/proposed/ComplexBackground/0062/0062_Divide_6`. Within this directory:
 
