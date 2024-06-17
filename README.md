@@ -6,6 +6,7 @@ This is the repository for paper "Efficient Light Field Transmission via Enhance
 
 matplotlib==3.3.0, numpy==1.23.5, pandas==1.0.5, Pillow==9.5.0, scipy==1.10.1, seaborn==0.10.1, tensorflow==2.10.1,opencv-python==4.9.0.80
 
+
 ## How to Predict User Angular Attention? 
 
 1.Place the light field image (LFI) (in form of subviews) into the folder: `./Dataset/APP/MINI_BATCH_DATA_TEST`. For convenience, a sample LFI has already been placed in this folder.
@@ -31,14 +32,15 @@ The predicted result is a probability distribution, representing the likelihood 
 
 ## Transmission Pipline
 
+Since the proposed method uses HEVC codec, [ffmpeg](https://ffmpeg.org/download.html) is required for transmission.
 
 ### The Proposed Method (Angular Attention + Enhanced Resampling Reconstruction)
 
-1.Specify the root directory of the light field images to be transmitted in `./Transmission/proposed.py`: `./Transmission/scenes/proposed` (recommended to use absolute path). For convenience, a sample LFI has already been placed in this folder.
+1.Specify the root directory of the light field images to be transmitted in `./Transmission/proposed.py`: `./Transmission/scenes/proposed`. For convenience, a sample LFI has already been placed in this folder.
 
-2.Run `python3 proposed&ERR.py`.
+2.Run `python3 proposed.py`.
 
-3.The transmitted Light Field Images (LFI) will be saved in `./Transmission/scenes/proposed&ERR/ComplexBackground/0062/0062_Divide_6`. Within this directory:
+3.The transmitted Light Field Images (LFI) will be saved in `./Transmission/scenes/proposed/ComplexBackground/0062/0062_Divide_6`. Within this directory:
 
 - `0062_Divide_6/Adaptive_SR` contains LFIs transmitted using our proposed strategy and the ERR method.
 - `0062_Divide_6/Adaptive_SR/Reconstruction` holds the LFIs transmitted with the proposed strategy.
