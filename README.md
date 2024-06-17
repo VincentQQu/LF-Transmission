@@ -5,7 +5,7 @@ This is the repository for paper "Efficient Light Field Transmission via Enhance
 ### Important
 
 1. Due to GitHub's size limitations, the complete project, including model weights, has been uploaded to Google Drive.
-2. Download and unzip the entire folder (~1 GB, mean and std to normalise LFIs contribute a lot) from [Google Drive](https://drive.google.com/drive/folders/1vZdrADy0TWMs_Nw2Cb_6dSzg9cx5O8qn?usp=sharing).
+2. Download and unzip the entire folder (~1 GB, mean and std to normalise LFIs contribute a lot) from [Google Drive](https://drive.google.com/file/d/1aMCeRIF0Aqltciuk66bzI3qILrnZ7qOu/view?usp=sharing).
 
 ### Requirements
 
