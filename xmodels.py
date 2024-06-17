@@ -35,7 +35,6 @@ def bnorm_layer(X, no_bn=True):
 
 #(-2,6) (-5,10) (-10,20)
 def relu_layer(X,mxv=20,nslp=0,thd=-10,alpha=0.2,name=None,relu_type='linear'):
-  print()
   if relu_type=='relux':
     return layers.ReLUx(max_value=mxv, negative_slope=nslp, threshold=thd)(X)
   elif relu_type=='leaky':
@@ -92,9 +91,7 @@ class LFA_self(tf.keras.layers.Layer):
     self.d1_pre, self.d1_post, self.sqrt_n, self.n_filters = d1_pre, d1_post, sqrt_n, n_filters
 
     self.inshape = inshape
-    print("------------------------+")
-    print(inshape)
-    print("------------------------+")
+
 
     assert d_model % self.num_heads == 0
 
@@ -133,8 +130,6 @@ class LFA_self(tf.keras.layers.Layer):
     return tf.transpose(x, perm=[0, 2, 1, 3])
 
   def call(self, v, k, q, mask=None):
-    print("v:{},k:{},q:{}",v,k,q)
-    print("v-type:{},k-type:{},q-type:{}",type(v),type(k),type(q))
     batch_size = tf.shape(q)[0]
 
     if self.embed == "nn":
@@ -142,11 +137,9 @@ class LFA_self(tf.keras.layers.Layer):
       k = self.wk(k)  # (batch_size, seq_len, d_model)
       v = self.wv(v)  # (batch_size, seq_len, d_model)
     else:
-      print("----+-------")
-      print(q.shape)
+
       q = self.wq(q)  # (batch_size, seq_len, d_model)
-      print(q.shape)
-      print("-----------")
+
       k = self.wk(k)  # (batch_size, seq_len, d_model)
       v = self.wv(v)  # (batch_size, seq_len, d_model)
       q = reshape2d(q)
@@ -162,16 +155,12 @@ class LFA_self(tf.keras.layers.Layer):
 
     scaled_attention = tf.transpose(scaled_attention, perm=[0, 2, 1, 3])  # (batch_size, seq_len_q, num_heads, depth)
     concat_attention = tf.reshape(scaled_attention, (batch_size, -1, self.d_model))# (batch_size, seq_len_q, d_model)
-    print("+++++++++++++++++++++++++++=")
-    print(concat_attention)
+
     if self.embed != "nn":
       concat_attention = reshape4d(concat_attention, self.d1_post, self.sqrt_n, self.n_filters)
-    print(concat_attention)
-    print("+++++++++++++++++++++++++++=")
+
     output = self.wout(concat_attention)  # (batch_size, seq_len_q, d_model)
-    print("+++++++++++++++++++++++++++=")
-    print(attention_weights)
-    print("+---------------------------------------=")
+
     return output, attention_weights
 
 
@@ -185,22 +174,18 @@ def list_multi(l):
 
 
 def reshape2d(X):
-  # print(X.shape.as_list())
-  # print(tf.shape(X)[0])
+
   tshape = X.shape
   last_dim = list_multi(tshape[2:])
-  # print(last_dim)
+
   return tf.reshape(X, (tf.shape(X)[0], tshape[1], last_dim))
 
 
 
 def reshape4d(X, d1, sqrt_n, n_filters):
-  # print(X.shape.as_list())
-  # print(tf.shape(X)[0])
+
   tshape = X.shape
-  # last_dim = sum(tshape[2:])
-  # X=tf.expand_dims(X, -1)
-  # print(tshape)
+
   return tf.reshape(X, (tf.shape(X)[0], d1, 25, 38, n_filters))
 
 class MyStackLayer(layers.Layer):
@@ -253,9 +238,9 @@ class LF_DSC(tf.keras.layers.Layer):
 
 
 def LFDepthwiseConvBlock(inputs, n_filters=16,filter_size=(3,3), n_sais=81, strides=2, residual=False, include_act=True):
-  print(inputs)
+
   X=layers.Conv3D(n_filters, 1,padding='same',activation='linear')(inputs)
-  # if include_act: X=xrelu(X)
+
 
   if residual:
     strides=1
@@ -266,8 +251,7 @@ def LFDepthwiseConvBlock(inputs, n_filters=16,filter_size=(3,3), n_sais=81, stri
     X1= X[:,i,:,:,:]
     X1 = layers.DepthwiseConv2D(filter_size, strides=strides, padding='same',input_shape=X.shape[2:], depthwise_initializer=ini_kern(),activation='linear')(X1)
     stack.append(X1)
-  print("X")
-  print(len(stack))
+
   X=MyStackLayer()(stack)
 
   if include_act: X=xrelu(X)
@@ -295,38 +279,21 @@ def LFAngularConvBlock(inputs, n_filters=8,filter_size=(7,7,4,4), n_sais=49, dil
 
 
 def LFACon_self(X, sqrt_n, resid=True, resid_con=True, n_filters=3, num_heads=8, verbose=False, strides=4, filter_size=(3,3), d1=81, with_con=True):
-  print("eeeeeee")
-  # print(X)
+
   if verbose: print('-'*20)
-  # if verbose: print(X.shape())
+
   if with_con: X=LFDepthwiseConvBlock(X, n_filters=n_filters, residual=resid_con, strides=strides, filter_size=filter_size, n_sais=d1)
 
 
   if resid:
     X0 = X
 
-  # if verbose: print(X.shape)
-  # X = reshape2d(X)
-  print("开始打印+")
-  if 1: print(X)
-  print("开始打印-")
   lfa_self = LFA_self(d_model=int(sqrt_n**2*n_filters), num_heads=num_heads, d1_pre=d1, d1_post=d1, sqrt_n=sqrt_n, n_filters=n_filters, inshape=X.shape)
-  print(X)
-  print("---+----")
+
   X, attn = lfa_self(X, k=X, q=X)
-  print("!!!!!!!!!!!!!!!+")
-  if 1: print(X)
-  print("!!!!!!!!!!!!!!!-")
-  
-  # X=xrelu(X)
-  # X = reshape4d(X, d1=d1, sqrt_n=sqrt_n, n_filters=n_filters)
-  print("------------------")
-  print(X0)
-  print(X)
+
   X=layers.Conv3D(n_filters, 1, padding='same',activation='linear')(X)
-  print("------------------")
-  print(X)
-  # X=xrelu(X)
+
   if resid: X = layers.Add()([X0, X])
   if verbose: print(X.shape)
 
@@ -336,8 +303,6 @@ def LFACon_self(X, sqrt_n, resid=True, resid_con=True, n_filters=3, num_heads=8,
 
 
 def LFACon_grid(X, sqrt_n, resid=True, resid_con=True, n_filters=3, num_heads=8, verbose=False, strides=1, filter_size=(3,3), n_sais=49, with_con=True):
-  print("++---+++")
-  print(X.shape)
   if verbose: print('-'*20)
   if verbose: print(X.shape)
   if with_con:
@@ -345,52 +310,32 @@ def LFACon_grid(X, sqrt_n, resid=True, resid_con=True, n_filters=3, num_heads=8,
 
   if verbose: print(X.shape)
 
-  # X = reshape2d(X)
-  # if verbose: print(X.shape)
+
 
   # target_i = [8, 10, 12, 22, 24, 26, 36, 38, 40]
   target_i = [30, 31, 32, 39, 40, 41, 48, 49, 50]
   stack = []
-  print("000000000000001")
-  print(X.shape)
+
   lfa_self = lfa_self = LFA_self(d_model=int(sqrt_n**2*n_filters), num_heads=num_heads, d1_pre=49, d1_post=9, sqrt_n=15, n_filters=n_filters, inshape=X.shape)
-  print(X.shape)
-  print("000000000000001")
+
   for i in target_i:
     X1= X[:,i,:]
     
     stack.append(X1)
   X2=MyStackLayer()(stack)
-  print(X.shape)
-  print("000000000000002")
-  print(X.shape)
+
   X, _ = lfa_self(X, k=X, q=X2)
-  print(X.shape)
-  print("000000000000002")
-  # X=xrelu(X)
 
   if verbose: print(X.shape)
-  # X = reshape4d(X, 9, sqrt_n=sqrt_n, n_filters=n_filters)
-  print("000000000000003")
-  print(X.shape)
+
   X=layers.Conv3D(n_filters, 1, padding='same',activation='linear')(X)
-  print(X.shape)
-  print("000000000000003")
-  print(X.shape)
-  # X=xrelu(X)
 
   if verbose: print(X.shape)
-  print("000000000000004")
-  print(X.shape)
+
   if resid: X = layers.Add()([X2, X])
-  print(X.shape)
-  print("000000000000004")
-  print(X.shape)
-  print("000000000000005")
-  print(X.shape)
+
   X = l_norm(X)
-  print(X.shape)
-  print("000000000000005")
+
   return X
 
 
@@ -401,21 +346,15 @@ def LFACon_centre(X, sqrt_n, resid=True, resid_con=True, n_filters=3, num_heads=
   if with_con: X=LFDepthwiseConvBlock(X, n_filters=n_filters, residual=resid_con, strides=strides, filter_size=filter_size, n_sais=9)
 
   if verbose: print(X.shape)
-  # X = reshape2d(X)
-  # if verbose: print(X.shape)
 
   lfa_self = lfa_self = LFA_self(d_model=int(sqrt_n**2*n_filters), num_heads=num_heads, d1_pre=9, d1_post=1, sqrt_n=5, n_filters=n_filters, inshape=X.shape)
   Xc= X[:,4,:]
   Xc = MyStackLayer_Expand_Dims()(Xc)
-  # if verbose: print("Xc",Xc.shape)
 
   X, _ = lfa_self(X, k=X, q=Xc)
   if verbose: print(X.shape)
 
-  # X=xrelu(X)
-  # X = reshape4d(X, 1, sqrt_n=sqrt_n, n_filters=n_filters)
   X=layers.Conv3D(n_filters, 1, padding='same',activation='linear')(X)
-  # X=xrelu(X)
   if verbose: print(X.shape)
 
   if resid: X = layers.Add()([Xc, X])
@@ -425,13 +364,11 @@ def LFACon_centre(X, sqrt_n, resid=True, resid_con=True, n_filters=3, num_heads=
 
 # X shape = None 81, 200, 300, 3
 def spatial_reduction_1(X):
-  print("spatial_reduction_1")
+
   # kernel_size = (1,3,3), stride = (1,2,2)
   X=layers.Conv3D(3, kernel_size=(1,3,3), strides=(1,2,2), padding='same',activation='linear')(X)
   X=xrelu(X)
-  print("---------")
-  print(X.shape)
-  print("---------")
+
   # spatial reduction
   X=LFDepthwiseConvBlock(X, n_filters=3, residual=True, strides=1, filter_size=(3,3))
   X=layers.MaxPooling3D(pool_size=(1,2,2), padding='same')(X)
@@ -444,10 +381,8 @@ def spatial_reduction_1(X):
   X=LFDepthwiseConvBlock(X, n_filters=12, residual=True, strides=1, filter_size=(3,3))
   X=layers.MaxPooling3D(pool_size=(1,2,2), padding='same')(X)
   X=LFDepthwiseConvBlock(X, n_filters=24, residual=False, strides=1, filter_size=(3,3))
-  print("spatial_reduction_2")
 
-  # print(X.shape)
-  # X = l_norm(X)
+
   return X
 
 
@@ -469,28 +404,27 @@ def channel_expansion(X):
 # input_shape = 81, 400, 600 3
 def get_LFACon(input_shape, verbose=False):
   inputs = layers.Input(shape = input_shape,name='lfi_input')
-  print("初始shape")
-  print(input_shape)
+
 
   X = inputs
   
   X = spatial_reduction_1(X)
-  print("q0")
+
   X = LFACon_self(X, 5, resid=True, resid_con=True, n_filters=24, num_heads=8, verbose=verbose, strides=1, filter_size=(3,3), with_con=True)
-  print("q1")
+
   X = LFACon_self(X, 5, resid=True, resid_con=True, n_filters=24, num_heads=8, verbose=verbose, strides=1, filter_size=(3,3), with_con=True)
-  print("q2")
+
   X = LFACon_self(X, 5, resid=True, resid_con=True, n_filters=24, num_heads=8, verbose=verbose, strides=1, filter_size=(3,3), with_con=True)
 
   X=LFACon_grid(X, 15, verbose=True, n_filters=80, num_heads=8, resid=True, resid_con=False)
   X = LFACon_self(X, 15, resid=True, resid_con=True, n_filters=48, num_heads=8, verbose=verbose, strides=1, filter_size=(3,3), with_con=True, d1=9)
-  print("q5")
+
   X = LFACon_self(X, 15, resid=True, resid_con=True, n_filters=48, num_heads=8, verbose=verbose, strides=1, filter_size=(3,3), with_con=True, d1=9)
-  print("q6")
+
   X=LFACon_centre(X, 5, verbose=verbose, n_filters=96, num_heads=8, resid=True, resid_con=False)
-  print("q7")
+
   X=channel_expansion(X)
-  print("q8")
+
 
   # X=layers.MaxPooling3D(pool_size=(1,2,2), padding='same')(X)
   X=layers.Conv3D(768, kernel_size=(1,1,1), strides=(1,1,1), padding='same', activation='linear')(X)
@@ -503,15 +437,11 @@ def get_LFACon(input_shape, verbose=False):
   pred_mos = layers.Dense(81, activation='softmax', name='mos')(X)
 
   predictions = [pred_mos]
-  print("predictions:{}",predictions)
-  #模型的输入
+
   model = models.Model(inputs=inputs,outputs=predictions)
-  print("model:{}",model)
-  print("----------------------+-————————————————————————————————————")
-  #if 1:
-  model.summary()
-    # print("++----+")
-    # print(len(model.layers))
+
+  # model.summary()
+
   return model
 
 
@@ -530,9 +460,7 @@ def get_Xmodel(model_struct, input_shape, fully_tained=True, learning_rate=0.001
   elif model_struct == 'LFACon':
     # input shape = 81, 400, 600, 3
     model=get_LFACon(input_shape,False)
-    # print("+++++++++++++++++")
-    # print(model)
-    # loss={'mos':'mse'}
+
     model.compile(optimizer=opt, loss='categorical_crossentropy', metrics=['mae'])
   else:
     if model_struct == "CNN_4D":

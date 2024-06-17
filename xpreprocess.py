@@ -16,13 +16,12 @@ t.start()
 exclude_ref = True
 dataset_root, _, s = utils.root_paths()
 dn = constants.dataset_name
-af = constants.aug_factor ###-
+af = constants.aug_factor
 img_format = constants.img_format
 
 
 
 def flatten_dataset(save_dir):
-  # \Datasets\MPI-LFA\
   read_dir = dataset_root+dn+s
   read_img_paths = glob.glob(read_dir+"**/*."+img_format, recursive=True)
   ref_word = 'Reference'
@@ -57,9 +56,6 @@ def trim():
     diff = ImageChops.difference(img, bg)
     diff = ImageChops.add(diff, diff, 2.0, -100)
     bbox = diff.getbbox()
-    # l,r = 0, 625*15
-    # tp,b = 0, 434*15
-    # window = (l,tp,r,b)
     window=bbox
     new_img = img.crop(window)
     new_img.save(read_dir+name,img_format)
@@ -99,7 +95,6 @@ def resize(save_dir):
     print('processing',name,'...')
     img = Image.open(p)
     w, h = img.size
-    # left, top, right, bottom
     w_offset = int((w-constants.to_size[0])/2)
     h_offset = int((h-constants.to_size[1])/2)
     l,r = w_offset, w_offset+constants.to_size[0]
@@ -117,13 +112,13 @@ def resize(save_dir):
 def reduce_angular(save_dir):
   read_dir = dataset_root+ dn+"-resized" + s
   read_img_paths = glob.glob(read_dir+"*."+img_format, recursive=False)
-  # (15,434,15,434,3)
+
   org_shape = constants.org_shape
-  # (7,434,7,434,3)
+
   from_shape = constants.from_shape
   u_offset=int((org_shape[0]-from_shape[0])/2)
   v_offset=int((org_shape[2]-from_shape[2])/2)
-  print(u_offset,v_offset)
+
   for p in read_img_paths:
     name = p.split(s)[-1]
     image = Image.open(p)
@@ -151,12 +146,11 @@ def reduce_angular(save_dir):
 #     print('processing',name,'...')
 #     image = Image.open(p)
 #     for r in rotate_angles:
-#       # 旋转图片
 #       img = image.rotate(r)
 #       # name+rotate+rotate_angular+.png
 #       new_name = name[:-4]+'+rotate'+str(r)+name[-4:]
 #       img.save(save_dir+new_name,img_format)
-#       # 水平翻转
+
 #       img_f = img.transpose(Image.FLIP_LEFT_RIGHT)
 #       new_name_f = new_name[:-4]+'+lrflip'+new_name[-4:]
 #       img_f.save(save_dir+new_name_f,img_format)
@@ -173,22 +167,22 @@ def reduce_angular(save_dir):
 #   rotate_angles = [0, 180]
 #   color_factors = [0.8, 1, 1.2]
 #   gamma_values = [0.8, 1.0, 1.2]
-#   # noise_levels = [0.1, 0.2, 0.3]  # 随机噪声水平
-#   noise_levels = [0.1]  # 随机噪声水平
+#   # noise_levels = [0.1, 0.2, 0.3]
+#   noise_levels = [0.1]
 #   for p in read_img_paths:
 #     name = p.split(s)[-1]
 #     print('processing', name, '...')
 #     image = Image.open(p)
 #     for r in rotate_angles:
-#       # 旋转图片
+
 #       img = image.rotate(r)
 #       # name+rotate+rotate_angular+.png
 #       new_name = name[:-6] + 'rotate-' + str(r) + name[-7:-4] + name[-4:]
-#       # 水平翻转
+
 #       img_f = img.transpose(Image.FLIP_LEFT_RIGHT)
 #       new_name_f = new_name[:-6] + 'lrflip' + name[-7:-4]  + new_name[-4:]
 #
-#       # 颜色缩放和gamma校正
+
 #       for factor in color_factors:
 #         enhancer = ImageEnhance.Color(img)
 #         img_color_scaled = enhancer.enhance(factor)
@@ -198,7 +192,7 @@ def reduce_angular(save_dir):
 #           save_path_combined = os.path.join(save_dir, new_name_combined)
 #           if not os.path.exists(save_path_combined):
 #             img_gamma.save(save_path_combined, img_format)
-#             # 添加随机噪声
+
 #             for noise_level in noise_levels:
 #               noisy_img = add_noise(img_gamma, noise_level)
 #               noisy_name = name[:-6] + f'color{str(factor)}-gamma{str(gamma)}-noise{int(noise_level * 10)}' + name[-7:-4]  + new_name[-4:]
@@ -229,18 +223,17 @@ def rotate_flip_single(p):
   image = Image.open(p)
   # rotate_angles
   for r in [0, 180]:
-  # 旋转图片
       img = image.rotate(r)
       # name+rotate+rotate_angular+.png
       new_name = name[:-6] + 'rotate' + str(r) + name[-7:]
       img.save(os.path.join(save_dir, new_name))
 
-      # 水平翻转
+
       img_f = img.transpose(Image.FLIP_LEFT_RIGHT)
       new_name_f = new_name[:-6] + 'lrflip' + new_name[-7:]
       img_f.save(os.path.join(save_dir, new_name_f))
 
-      # 添加噪声
+
       noisy_img = add_noise(img)
       noisy_name = new_name[:-6] + 'noise1' + new_name[-7:]
       noisy_img.save(os.path.join(save_dir, noisy_name))
@@ -263,7 +256,6 @@ def rotate_flip(save_dir):
 
 
 def add_noise(image):
-  """向图像添加随机噪声"""
   if image.mode != 'RGB':
     image = image.convert('RGB')
 
@@ -313,18 +305,17 @@ def process_images_in_parallel(save_dir, read_img_paths, num_processes):
 #   image = Image.open(p)
 #   rotate_angles = [0, 180]
 #   for r in rotate_angles:
-#     # 旋转图片
+
 #     img = image.rotate(r)
 #     # name+rotate+rotate_angular+.png
 #     new_name = name[:-6] + 'rotate' + str(r) + name[-7:]
 #     img.save(os.path.join(save_dir, new_name))
 #
-#     # 水平翻转
+
 #     img_f = img.transpose(Image.FLIP_LEFT_RIGHT)
 #     new_name_f = new_name[:-6] + 'lrflip' + new_name[-7:]
 #     img_f.save(os.path.join(save_dir, new_name_f))
 #
-#     # 添加噪声
 #     noisy_img = add_noise(img)
 #     noisy_name = new_name[:-6] + 'noise1' + new_name[-7:]
 #     noisy_img.save(os.path.join(save_dir, noisy_name))
@@ -339,22 +330,19 @@ def process_images_in_parallel(save_dir, read_img_paths, num_processes):
 #   read_dir = dataset_root + dn + "-flatten" + s
 #   read_img_paths = glob.glob(read_dir + "*." + img_format, recursive=False)
 #
-#   # 设置线程池大小，可以根据实际情况调整
 #   max_threads = 20
 #   threads = []
 #   for p in read_img_paths:
 #     thread = threading.Thread(target=process_image, args=(p, save_dir))
 #     threads.append(thread)
 #     if len(threads) >= max_threads:
-#       # 启动线程
 #       for t in threads:
 #         t.start()
-#       # 等待所有线程完成
 #       for t in threads:
 #         t.join()
 #       threads = []
 #
-#   # 启动并等待剩余的线程
+
 #   for t in threads:
 #     t.start()
 #   for t in threads:
@@ -378,7 +366,6 @@ def crop(save_dir):
   crop_windows = [(0,0,int(w/2),int(h/2)), (int(w/2),0,w,int(h/2)), (0,int(h/2),int(w/2),h), (int(w/2),int(h/2),w,h)]
   for p in read_img_paths:
     name = p.split(s)[-1]
-    print('processing',name,'...')
     image = Image.open(p)
     for i, cw in enumerate(crop_windows):
       img = image.crop(cw)
@@ -405,12 +392,10 @@ def tr_tt_split(save_dir):
   for p in tr_paths:
     parts = p.split(s)
     name = 'DUT-LF-tr-tt-x8='+parts[-1]
-    print(save_dir+name)
     os.rename(p, save_dir+name)
   for p in tt_paths:
     parts = p.split(s)
     name = 'test='+parts[-1]
-    print(save_dir+name)
     os.rename(p, save_dir+name)
   print('success! - tr_tt_split')
   t.lap()
@@ -426,7 +411,6 @@ def process_images(image_paths):
     image = Image.open(path)
     data = np.asarray(image, dtype=np.float32)
     partial_avg += data
-    print(u)
     u = u + 1
     # Standard deviation computation is deferred to the main process
   return partial_avg, len(image_paths)
@@ -475,7 +459,6 @@ def calculate_tr_avg_std(normalize_data_type=None):
   u=0
   for chunk in chunks:
     for path in chunk:
-      print(u)
       u=u+1
       image = Image.open(path)
       data = np.asarray(image, dtype=np.float32)
@@ -517,8 +500,7 @@ def calculate_tr_min_max(save_dir):
     a = a.reshape(to_shape)
     min_a = np.stack((min_a,a)).min(axis=0)
   min_a = min_a.astype('float32')
-  print(min_a.shape)
-  print(min_a)
+
   np.savez(save_path,min_a=min_a, max_a=max_a)
   print('success! - min')
   t.lap()
@@ -531,8 +513,7 @@ def calculate_tr_min_max(save_dir):
     a = a.reshape(to_shape)
     max_a = np.stack((max_a,a)).max(axis=0)
   max_a = max_a.astype('float32')
-  print(max_a.shape)
-  print(max_a)
+
   print('success! - max')
   t.lap()
   np.savez(save_path,min_a=min_a, max_a=max_a)
@@ -542,13 +523,11 @@ def calculate_tr_min_max(save_dir):
 
 
 if __name__ == "__main__":
-  # 扁平化(把所有图片放在同一个文件夹下面)
   flatten_save_dir = dataset_root+ dn+"-flatten" + s
   if not os.path.exists(flatten_save_dir):
     os.makedirs(flatten_save_dir)
     flatten_dataset(flatten_save_dir)
     t.lap()
-  # rotate x 8 times
   rotate_flip_save_dir = dataset_root+ dn+"-rotated-flipped" + s
   if not os.path.exists(rotate_flip_save_dir):
     os.makedirs(rotate_flip_save_dir)
